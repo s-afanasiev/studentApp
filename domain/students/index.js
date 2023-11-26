@@ -15,7 +15,7 @@ module.exports = class StudentService {
         this._bin = bin;
         this._dbService = bin.get("dbService");
         this._natsService = bin.get("natsService")
-        this._fakeStudentService = new FakeStudentService();
+        this._fakeStudentService = new FakeStudentService().run(bin, this._modelName);
         
         //@test
         // this.getStudentDbId("0986BC068044", (err, res)=>{
@@ -41,7 +41,7 @@ module.exports = class StudentService {
 
     _storedStudentEndLife(studentCode) {
         delete this._processingStudents[studentCode];
-        console.log("StudentService: queue length:", Object.keys(this._processingStudents).length)
+        //console.log("StudentService: queue length:", Object.keys(this._processingStudents).length)
     }
     
 }
@@ -62,6 +62,27 @@ class FakeStudentService {
         {name: "Дмитрий", lastName: "Дмитриев"}
     ]
     _fake_counter = 0;
+
+    run(bin, modelName) {
+        const dbService = bin.get("dbService");
+        const sequelize = dbService.sequelize;
+        const model = dbService.getModel(modelName);
+
+        //@SELECT foo, COUNT(hats) AS n_hats, bar FROM ...
+        model.count()
+        // model.findAll({
+        //     attributes: [
+        //         [sequelize.fn('COUNT', sequelize.col('personalCode')), 'count'],
+        //     ]
+        //}).then(res=>{
+        .then(res=>{
+            console.log("FakeStudentService: init res:", res, typeof res);
+            this._fake_counter = parseInt(res);
+        })
+
+            
+        return this;
+    }
 
     /** @param {String} id*/
     fakeStudent(id) {
@@ -95,8 +116,8 @@ class StoredStudent {
             where: { personalCode: this._personalCode }
         });
         if (stud) {
-            console.log("StoredStudent: already in DB:", stud.dataValues.id);
-            return this._finish(null, stud.dataValues.id);
+            //console.log("StoredStudent: already in DB:", stud.dataValues.id);
+            return this._finish(null, stud.dataValues.personalCode);
         }
         //@ 2. спросить в NATS
         this._natsService.requestStudent(this._personalCode, async (err, res)=>{

@@ -34,7 +34,7 @@ module.exports = class SubjectService {
 
     _storedSubjectEndLife(subjectName) {
         delete this._processingSubjects[subjectName];
-        console.log("SubjectService: queue length:", Object.keys(this._processingSubjects).length)
+        //console.log("SubjectService: queue length:", Object.keys(this._processingSubjects).length)
     }
 }
 
@@ -62,9 +62,9 @@ class StoredSubject {
         const [subject, is_created] = await model.findOrCreate({
             where: { name: this._subjectName }
           });
-        //console.log("StoredSubject: subject =", subject.dataValues.id);
+        console.log("StoredSubject: subject =", subject.dataValues.name);
 
-        this._finish(null, subject.dataValues.id);
+        this._finish(null, subject.dataValues.name);
 
         return this;
     }

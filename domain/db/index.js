@@ -1,4 +1,4 @@
-const db = require("./../sequelize/models");
+const db = require("../../sequelize/models");
 
 _checkConnection(db.sequelize);
 

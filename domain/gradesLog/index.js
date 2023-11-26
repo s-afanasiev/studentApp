@@ -1,7 +1,10 @@
 
-module.exports = class GradesLog {
+module.exports = class GradesLogService {
     _chart;
     _natsService;
+    _processingGrades = {};
+    _typedEventSource;
+    _storedGradeEventName = "grade";
     constructor(chart) {
         this._chart = chart;
     }
@@ -13,15 +16,26 @@ module.exports = class GradesLog {
     run(bin) {
         console.log("GradesLogService.run...")
         this._get_deps_by_link(bin);
+
+        this._typedEventSource = new bin.shared.helpers.TypedEventSource("GradesLog");
+        
         //@ say to natsService for connect to external Nats Server events
         const evName = process.env.NATS_EVENT_GRADE;
         this._deps["natsService"].subscribe(evName, (gradeInfo)=>{
-            console.log("GradesLogService: Event: gradeInfo= ", gradeInfo);
             const gradeJson = JSON.parse(gradeInfo);
-            this._deps["subjectService"].getSubjectDbId(gradeJson.data.subject, (err, res)=>{});
-            this._deps["studentService"].getStudentDbId(gradeJson.data.personalCode, (err, res)=>{});
+            const storedGrade = new StoredGrade(gradeJson);
+            storedGrade.onStored(storedGrade=>{
+                console.log("storedGrade.onStored event!");
+                this._typedEventSource.broadcast(this._storedGradeEventName, storedGrade);
+            });
+            storedGrade.run(bin);
+            
         })
-        //this.natsService.run();
+    }
+
+    subscribe(evName, cb) {
+        console.log("GradesLogService.subscribe: ", evName);
+        this._typedEventSource.subscribe(evName, cb);
     }
 
     _get_deps_by_link(bin) {
@@ -33,26 +47,62 @@ module.exports = class GradesLog {
         //@ check tha all dependencies was imported
         if (Object.values(this._deps).includes(null)) { throw new Error("GradesLog: deps DISMATCH!"); }
     }
-
-    //@ data example: {"data":{"personalCode":"4580FD982276","grade":5,"subject":"maths"}}
-    addGrade(data) {
-        this.check_addGrade_data(data);
-        new StoredGrade().init(pars, common).run(data);
-    }
-
-    check_addGrade_data(data) {
-        if(typeof data != "object" && typeof data.data != "object" && typeof data.data.personalCode != "string") {}
-    }
 }
 
 class StoredGrade {
-    constructor() {}
+    _gradeJson;
+    _modelName = "grades";
+    _onStoredCallback = () => {console.log("StoredGrade: _onStoredCallback was not overrided")};
+    constructor(gradeJson) {
+        this._gradeJson = gradeJson;
+    }
 
-    init(chart, bin) {
+    async run(bin) {
+        this._subjectService = bin.get("subjectService");
+        this._studentService = bin.get("studentService");
+        this._dbService = bin.get("dbService");
+        
+        const values = await Promise.all([
+            this._getSubjectName(this._gradeJson.data.subject),
+            this._getStudentCode(this._gradeJson.data.personalCode)
+        ]);
+        const [name, personalCode] = values;
+
+        const model = this._dbService.getModel(this._modelName);
+        const storedGrade = await model.create({
+            grade: this._gradeJson.data.grade,
+            subjectName: name,
+            studentPersonalCode: personalCode
+        });
+        console.log("StoredGrade: saved:", JSON.stringify(storedGrade.dataValues));
+        this._onStoredCallback(storedGrade.dataValues);
+        
         return this;
     }
 
-    run(data) {
-        return this;
+    onStored(cb) { this._onStoredCallback = cb; }
+
+    _getSubjectName(subjectname) {
+        return new Promise((resolve, reject)=>{
+            this._subjectService.getSubjectDbId(subjectname, (err, res)=>{
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(res)
+                }
+            });
+        });
+    }
+
+    _getStudentCode(personalCode) {
+        return new Promise((resolve, reject)=>{
+            this._studentService.getStudentDbId(personalCode, (err, res)=>{
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(res)
+                }
+            });
+        });
     }
 }

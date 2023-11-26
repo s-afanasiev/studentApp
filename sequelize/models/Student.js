@@ -2,12 +2,8 @@
 // const db = require("./../../db");
 module.exports = (sequelize, DataTypes)=> { 
 	return sequelize.define('students', {
-		id: {
-			primaryKey: true,
-			autoIncrement: true,
-			type: DataTypes.INTEGER
-		},
 		personalCode: {
+			primaryKey: true,
 			type: DataTypes.STRING(100),
 			allowNull: false
 		},

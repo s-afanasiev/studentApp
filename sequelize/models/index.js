@@ -41,6 +41,17 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-//db.students
+//@ Associations
+db.students.hasMany(db.grades);
+db.grades.belongsTo(db.students);
+
+db.students.hasMany(db.grade_statistic);
+db.grade_statistic.belongsTo(db.students);
+
+db.subjects.hasMany(db.grades);
+db.grades.belongsTo(db.subjects);
+
+db.subjects.hasMany(db.grade_statistic);
+db.grade_statistic.belongsTo(db.subjects);
 
 module.exports = db;

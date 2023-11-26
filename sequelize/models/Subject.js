@@ -3,12 +3,8 @@ const Sequelize = require("sequelize");
 //module.exports = db.sequelize.define('subjects', {
 module.exports = (sequelize, DataTypes)=> {
 	return sequelize.define('subjects', {
-		id: {
-			primaryKey: true,
-			autoIncrement: true,
-			type: DataTypes.INTEGER
-		},
 		name: {
+			primaryKey: true,
 			type: DataTypes.STRING(80),
 			allowNull: false
 		}
