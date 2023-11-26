@@ -1,0 +1,86 @@
+connected to 192.162.246.63:4222
+here the code resumes...
+Невозможно выполнить подключение к БД:  ConnectionError [SequelizeConnectionError]: ������������ "student_user" �� ������ �������� ����������� (�� ������)
+    at Client._connectionCallback (C:\CODE\GK_Jelezno_project\express_based\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:143:24)
+    at Client._handleErrorWhileConnecting (C:\CODE\GK_Jelezno_project\express_based\node_modules\pg\lib\client.js:327:19)
+    at Client._handleErrorMessage (C:\CODE\GK_Jelezno_project\express_based\node_modules\pg\lib\client.js:347:19)
+    at Connection.emit (node:events:513:28)
+    at C:\CODE\GK_Jelezno_project\express_based\node_modules\pg\lib\connection.js:117:12
+    at Parser.parse (C:\CODE\GK_Jelezno_project\express_based\node_modules\pg-protocol\dist\parser.js:40:17)
+    at Socket.<anonymous> (C:\CODE\GK_Jelezno_project\express_based\node_modules\pg-protocol\dist\index.js:11:42)
+    at Socket.emit (node:events:513:28)
+    at addChunk (node:internal/streams/readable:324:12)
+    at readableAddChunk (node:internal/streams/readable:297:9) {
+  parent: error: ������������ "student_user" �� ������ �������� ����������� (�� ������)
+      at Parser.parseErrorMessage (C:\CODE\GK_Jelezno_project\express_based\node_modules\pg-protocol\dist\parser.js:287:98)
+      at Parser.handlePacket (C:\CODE\GK_Jelezno_project\express_based\node_modules\pg-protocol\dist\parser.js:126:29)
+      at Parser.parse (C:\CODE\GK_Jelezno_project\express_based\node_modules\pg-protocol\dist\parser.js:39:38)
+      at Socket.<anonymous> (C:\CODE\GK_Jelezno_project\express_based\node_modules\pg-protocol\dist\index.js:11:42)
+      at Socket.emit (node:events:513:28)
+      at addChunk (node:internal/streams/readable:324:12)
+      at readableAddChunk (node:internal/streams/readable:297:9)
+      at Readable.push (node:internal/streams/readable:234:10)
+      at TCP.onStreamRead (node:internal/stream_base_commons:190:23) {
+    length: 124,
+    severity: '�����',
+    code: '28P01',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: undefined,
+    internalQuery: undefined,
+    where: undefined,
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'auth.c',
+    line: '329',
+    routine: 'auth_failed'
+  },
+  original: error: ������������ "student_user" �� ������ �������� ����������� (�� ������)
+      at Parser.parseErrorMessage (C:\CODE\GK_Jelezno_project\express_based\node_modules\pg-protocol\dist\parser.js:287:98)
+      at Parser.handlePacket (C:\CODE\GK_Jelezno_project\express_based\node_modules\pg-protocol\dist\parser.js:126:29)
+      at Parser.parse (C:\CODE\GK_Jelezno_project\express_based\node_modules\pg-protocol\dist\parser.js:39:38)
+      at Socket.<anonymous> (C:\CODE\GK_Jelezno_project\express_based\node_modules\pg-protocol\dist\index.js:11:42)
+      at Socket.emit (node:events:513:28)
+      at addChunk (node:internal/streams/readable:324:12)
+      at readableAddChunk (node:internal/streams/readable:297:9)
+      at Readable.push (node:internal/streams/readable:234:10)
+      at TCP.onStreamRead (node:internal/stream_base_commons:190:23) {
+    length: 124,
+    severity: '�����',
+    code: '28P01',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: undefined,
+    internalQuery: undefined,
+    where: undefined,
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'auth.c',
+    line: '329',
+    routine: 'auth_failed'
+  }
+}
+[1]: {"data":{"personalCode":"9201CE420779","grade":5,"subject":"biology"}}
+[2]: {"data":{"personalCode":"9201CE420779","grade":2,"subject":"maths"}}
+[3]: {"data":{"personalCode":"9245EE000878","grade":5,"subject":"music"}}
+[4]: {"data":{"personalCode":"2133DE020772","grade":2,"subject":"english"}}
+[5]: {"data":{"personalCode":"0986BC068044","grade":5,"subject":"biology"}}
+[6]: {"data":{"personalCode":"1383DB747648","grade":5,"subject":"science"}}
+[7]: {"data":{"personalCode":"2133DE020772","grade":4,"subject":"history"}}
+[8]: {"data":{"personalCode":"9245EE000878","grade":5,"subject":"geography"}}
+[9]: {"data":{"personalCode":"6335FC113011","grade":1,"subject":"history"}}
+[10]: {"data":{"personalCode":"0425AB018373","grade":3,"subject":"history"}}
+[11]: {"data":{"personalCode":"4580FD982276","grade":5,"subject":"english"}}
+[12]: {"data":{"personalCode":"6335FC113011","grade":1,"subject":"biology"}}
+[13]: {"data":{"personalCode":"2966FA629336","grade":4,"subject":"science"}}
+[14]: {"data":{"personalCode":"2412BA923438","grade":5,"subject":"maths"}}
+[15]: {"data":{"personalCode":"2412BA923438","grade":5,"subject":"maths"}}
+[16]: {"data":{"personalCode":"6335FC113011","grade":4,"subject":"maths"}}
