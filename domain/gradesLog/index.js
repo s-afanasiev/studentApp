@@ -62,11 +62,17 @@ class StoredGrade {
         this._studentService = bin.get("studentService");
         this._dbService = bin.get("dbService");
         
+        const subjName = this._gradeJson.data.subject;
+        const persCode = this._gradeJson.data.personalCode;
+        console.log("___StoredGrade: requesting subjName=", subjName, ", persCode=", persCode);
         const values = await Promise.all([
-            this._getSubjectName(this._gradeJson.data.subject),
-            this._getStudentCode(this._gradeJson.data.personalCode)
-        ]);
+            this._getSubjectName(subjName),
+            this._getStudentCode(persCode)
+        ]).catch(err=>{
+            console.error(">>> StoredGrade: Errors after Promise.all: ", err);
+        });
         const [name, personalCode] = values;
+        console.log("_____StoredGrade: responsed: name=", name, ", personalCode=", personalCode);
 
         const model = this._dbService.getModel(this._modelName);
         const storedGrade = await model.create({

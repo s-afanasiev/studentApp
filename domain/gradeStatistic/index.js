@@ -40,7 +40,7 @@ class StoredGradeStat {
             await model.update({
                 grade_avg: (res.dataValues.grade_avg + this._storedGradeJson.grade) / 2,
                 grade_max: (res.dataValues.grade_max > this._storedGradeJson.grade) ? res.dataValues.grade_max : this._storedGradeJson.grade,
-                grades_count: (res.dataValues.grades_count ? (res.dataValues.grades_count+1) : 1)
+                grades_count: (res.dataValues.grades_count+1)
             }, {
                 where: {
                     studentPersonalCode: this._storedGradeJson.studentPersonalCode,
@@ -52,7 +52,7 @@ class StoredGradeStat {
             model.create({
                 grade_avg: this._storedGradeJson.grade,
                 grade_max: this._storedGradeJson.grade,
-                grade_count: 1,
+                grades_count: 1,
                 studentPersonalCode: this._storedGradeJson.studentPersonalCode,
                 subjectName: this._storedGradeJson.subjectName
             });
