@@ -36,7 +36,7 @@ class StoredGradeStat {
     }
 
     async run(bin) {
-        console.log("StoredGradeStat.run... ");
+        //console.log("StoredGradeStat.run... ");
         const dbService = bin.get("dbService");
         const model = dbService.getModel(this._modelName);
         const res = await model.findOne({ where: {
@@ -95,18 +95,45 @@ class StudentStat {
             },
             logging: console.log
         });
-        //@ result = [ { dataValues: {id, maxGrade, minGrade,..., studentPersonalCode}, { dataValues: {...} } } ]
         
         //@ TODO: convert answer from [{}, {}] to {student: {}, statistic: [{}, {}]}
         const final_result = this._convert_result(result_stat, resut_student);
-        res.end(final_result);
+        if (final_result){
+            res.status(200);
+            res.header("Content-Type",'application/json');
+            res.end(final_result);
+        } else {
+            res.status(400).send({message: "Не существует такого Студента!"})
+        }
     }
+    
+    //@ result_stat = [ { dataValues: {id, maxGrade, minGrade,..., studentPersonalCode}, { dataValues: {...} } } ]
+    //@ result_student = { dataValues: {personalCode, name, lastName} }
+    _convert_result(result_stat, result_student) {
+        //console.log("_convert_result: result_student=", result_student);
+        const result = { student: {}, statistic: [] };
+        if (result_student === null) {
+            return false;
+        }
+        result.student.personalCode = result_student.dataValues.personalCode;
+        result.student.name = result_student.dataValues.name;
+        result.student.lastName = result_student.dataValues.lastName;
 
-    _convert_result(result_stat, resut_student) {
-        // const mapped_result = result.map(el=> el.dataValues);
-        // console.log("StudentStat: mapped_result=", mapped_result);
+        const mid_stat = result_stat.map(el=> el.dataValues);
+        //console.log("_convert_result: mid_stat=", mid_stat);
+        mid_stat.forEach(tuple=>{
+            const temp = {};
+            temp.subject = tuple.subjectName,
+            temp.maxGrade = tuple.maxGrade,
+            temp.minGrade = tuple.minGrade,
+            temp.avgGrade = tuple.avgGrade,
+            temp.totalGrades = tuple.totalGrades
+            result.statistic.push(temp);
+        })
+
         // final_result[persCode] = mapped_result;
         // console.log("StudentStat: final_result=", final_result);
-        return "test";
+        //return result;
+        return JSON.stringify(result);
     }
 }

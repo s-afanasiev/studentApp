@@ -51,7 +51,7 @@ class StoredSubject {
     }
 
     async run(bin) {
-        console.log("StoredSubject.run...");
+        //console.log("StoredSubject.run...");
         this._activate(true);
         this._bin = bin;
         this._simpleEventSource = new bin.shared.helpers.SimpleEventSource();
@@ -62,7 +62,7 @@ class StoredSubject {
         const [subject, is_created] = await model.findOrCreate({
             where: { name: this._subjectName }
           });
-        console.log("StoredSubject: subject =", subject.dataValues.name);
+        //console.log("StoredSubject: subject =", subject.dataValues.name);
 
         this._finish(null, subject.dataValues.name);
 

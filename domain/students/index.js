@@ -11,7 +11,7 @@ module.exports = class StudentService {
     }
 
     run(bin) {
-        console.log("StudentService.run...")
+        //console.log("StudentService.run...")
         this._bin = bin;
         this._dbService = bin.get("dbService");
         this._natsService = bin.get("natsService")
@@ -56,7 +56,7 @@ class StoredStudent {
     }
 
     async run(bin, fakeStudentService) {
-        console.log("StoredStudent.run...");
+        //console.log("StoredStudent.run...");
         this._activate(true);
         this._bin = bin;
         this._simpleEventSource = new bin.shared.helpers.SimpleEventSource();
