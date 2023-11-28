@@ -1,7 +1,7 @@
 ЗАПУСК ПРИЛОЖЕНИЯ:
 
 1) скачиваем проект:
-git clone https://gitflic.ru/project/afasv/studentapp.git
+git clone https://github.com/s-afanasiev/studentApp.git
 2) устанавливаем зависимости:
 npm i
 3) запускаем контейнеры Докер:
