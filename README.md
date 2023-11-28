@@ -23,5 +23,45 @@ npm run dev
 Также, при успешной записи в БД, сервис GradeLogService испускает собственное событие "grade", на которое подписан сервис GradeStatistic, который производит расчёт "средней оценки", "максимальной оценки" и "количестве оценок" для соответсвующих Студента и Предмета и производит запись в таблицу grade-statistic базы данных
 
 2) TODO: Доделать 2 точки доступа через REST API.
-2.1) запрос данных о студенте по его идентификатору personalCode
-2.2) Статистика всех оценок с пагинацией
+2.1) API ручка 1: Лог оценок сортированный по дате
+    GET /log?[pagination parameters]
+    content-type: application/json
+    Сервис: GradesLogService 
+    Ответ:
+    [
+        {
+            date:string // дата-время получения оценки в ISO-формате
+            subject:string // код предмета
+            grade:number // полученная оценка
+            student: {
+                personalCode:string // персональный код студента
+                name:string // имя студента
+                lastName:string // фамилия студента
+            }
+        },
+        ...
+    ]
+
+
+2.2) API ручка 2: Статистика студента по всем предметам
+    GET /statistic/:personalCode
+    content-type: application/json
+    Сервис: GradeStatisticService
+    ответ:
+    {
+        student: {
+            personalCode:string // персональный код студента
+            name:string // имя студента
+            lastName:string // фамилия студента
+        },
+        statistic: [ // массив инфы по предметам, включая те, по которым у студента не было оценок
+            {
+                subject:string // код предмета
+                maxGrade:number // максимальная оценка
+                minGrade:number // минималььная оценка
+                avgGrade:number // средняя оценка (дробное число)
+                totalGrades:number // всего получено оценок
+            },
+            ...
+        ]
+    }  

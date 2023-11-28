@@ -16,6 +16,7 @@ module.exports = class GradesLogService {
     run(bin) {
         console.log("GradesLogService.run...")
         this._get_deps_by_link(bin);
+        this._express = bin.get("express");
 
         this._typedEventSource = new bin.shared.helpers.TypedEventSource("GradesLog");
         

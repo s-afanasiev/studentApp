@@ -6,13 +6,16 @@ module.exports = (sequelize, DataTypes)=> {
             primaryKey: true,
             allowNull: false
         },
-        grade_avg: {
-            type: DataTypes.FLOAT
-        },
-        grade_max: {
+        maxGrade: {
             type: DataTypes.INTEGER
         },
-        grades_count: {
+        minGrade: {
+            type: DataTypes.INTEGER
+        },
+        avgGrade: {
+            type: DataTypes.FLOAT
+        },
+        totalGrades: {
             type: DataTypes.INTEGER
         }
     }, {
